@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using SpyVK.Data;
 using SpyVK.Entities;
+using SpyVK.Services;
+using SpyVK.Services.Interfaces;
 using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,7 +16,7 @@ builder.Services.AddDbContext<ApplicationUserDbContext>(config =>
 {
     config.UseSqlite(userDbConnectionString);
 })
-    .AddIdentity<ApplicationUser,ApplicationRole>(config =>
+    .AddIdentity<ApplicationUserIdentity,ApplicationRole>(config =>
     {
         config.SignIn.RequireConfirmedAccount = true;
         config.Password.RequireDigit = false;
@@ -46,6 +48,11 @@ builder.Services.AddAuthentication()
             }
         };
     });
+
+builder.Services.AddScoped<IVKApiService, VKApiService>();
+builder.Services.AddSingleton<IVKApiService, VKApiService>();
+builder.Services.AddSingleton<IQueueOfTask, QueueOfTaskService>();
+builder.Services.AddHostedService<QueueOfTaskRunnerBackgroundService>();
 
 var app = builder.Build();
 

@@ -4,14 +4,15 @@ using SpyVK.Entities;
 
 namespace SpyVK.Data
 {
-    public class ApplicationUserDbContext : IdentityDbContext<ApplicationUser,ApplicationRole,Guid>
+    public class ApplicationUserDbContext : IdentityDbContext<ApplicationUserIdentity,ApplicationRole,Guid>
     {
         public ApplicationUserDbContext(DbContextOptions<ApplicationUserDbContext> options)
             : base(options)
         {
-
+            Database.EnsureDeleted();
+            Database.EnsureCreated();
         }
 
-        public DbSet<ApplicationUser> Users { get; set; }
+        public DbSet<ApplicationUserIdentity> Users { get; set; }
     }
 }
