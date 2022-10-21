@@ -4,39 +4,33 @@ namespace SpyVK.Services
 {
     public class QueueOfTaskService : IQueueOfTask
     {
-        private readonly Queue<Task> _primaryQueue;
-        private readonly Queue<Task> _secondaryQueue;
+        private readonly PriorityQueue<Task,int> _priorityQueue;
         public QueueOfTaskService()
         {
-            _primaryQueue = new Queue<Task>();
-            _secondaryQueue = new Queue<Task>();
+            _priorityQueue = new PriorityQueue<Task, int>();
         }
         public void AddPrimaryTask(Task task)
         {
-            _primaryQueue.Enqueue(task);
+            _priorityQueue.Enqueue(task, 0);
         }
 
         public void AddSecondaryTask(Task task)
         {
-            _secondaryQueue.Enqueue(task);
+            _priorityQueue.Enqueue(task, 1);
         }
 
-        public Task GetPrimaryTask()
+        public Task GetTask()
         {
-            if (_primaryQueue.Count == 0)
+            Task task;
+            bool result = _priorityQueue.TryDequeue(out task, out _);
+            if (result)
+            {
+                return task;
+            }
+            else
             {
                 return null;
             }
-            return _primaryQueue.Dequeue();
-        }
-
-        public Task GetSecondaryTask()
-        {
-            if (_secondaryQueue.Count == 0)
-            {
-                return null;
-            }
-            return _secondaryQueue.Dequeue();
         }
     }
 }

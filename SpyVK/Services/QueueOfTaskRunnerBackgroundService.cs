@@ -56,28 +56,16 @@ namespace SpyVK.Services
                 int taskGettingCount = 0;
                 while (taskGettingCount <= requestCount)
                 {
-                    Task task = queue.GetPrimaryTask();
+                    Task task = queue.GetTask();
                     if (task != null)
                     {
-                        _logger.LogInformation("Background service - get primary task for execution - Queue of task runner.");
-                        task.Start();
+                        _logger.LogInformation("Background service - start task - Queue of task runner.");
                         taskGettingCount++;
-                        continue;
+                        task.Start();
                     }
                     else
                     {
-                        task = queue.GetSecondaryTask();
-                        if (task != null)
-                        {
-                            _logger.LogInformation("Background service - get secondary task for execution - Queue of task runner.");
-                            task.Start();
-                            taskGettingCount++;
-                            continue;
-                        }
-                        else
-                        {
-                            break;
-                        }
+                        break;
                     }
                 }
             }
