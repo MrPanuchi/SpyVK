@@ -4,6 +4,7 @@ using SpyVK.Data;
 using SpyVK.Entities;
 using SpyVK.Services;
 using SpyVK.Services.Interfaces;
+using SpyVK.Services.newVK;
 using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -53,6 +54,8 @@ builder.Services.AddScoped<IVKApiService, VKApiService>();
 builder.Services.AddSingleton<IVKApiService, VKApiService>();
 builder.Services.AddSingleton<IQueueOfTask, QueueOfTaskService>();
 builder.Services.AddHostedService<QueueOfTaskRunnerBackgroundService>();
+
+builder.Services.AddSingleton<ApiVK>();
 
 var app = builder.Build();
 

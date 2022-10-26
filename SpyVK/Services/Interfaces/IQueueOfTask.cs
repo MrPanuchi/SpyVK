@@ -1,9 +1,11 @@
-﻿namespace SpyVK.Services.Interfaces
+﻿using SpyVK.Services.newVK;
+
+namespace SpyVK.Services.Interfaces
 {
     public interface IQueueOfTask
     {
-        void AddPrimaryTask(Task task);
-        void AddSecondaryTask(Task task);
-        Task GetTask();
+        void AddPrimaryTask(TimeTask task);
+        void AddSecondaryTask(TimeTask task);
+        TimeTask GetTask();
     }
 }

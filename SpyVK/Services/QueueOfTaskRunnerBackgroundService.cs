@@ -1,4 +1,5 @@
 ﻿using SpyVK.Services.Interfaces;
+using SpyVK.Services.newVK;
 
 namespace SpyVK.Services
 {
@@ -8,18 +9,15 @@ namespace SpyVK.Services
         private readonly ILogger<QueueOfTaskRunnerBackgroundService> _logger;
         private readonly IConfiguration _configuration;
         private readonly IServiceProvider _services;
-//        private readonly IQueueOfTask _queueOfTask;
         private int requestCount;
         public QueueOfTaskRunnerBackgroundService(
             ILogger<QueueOfTaskRunnerBackgroundService> logger,
             IConfiguration configuration,
             IServiceProvider services)
-//            IQueueOfTask queueOfTask)
         {
             _logger = logger;
             _configuration = configuration;
             _services = services;
-//            _queueOfTask = queueOfTask;
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
@@ -56,12 +54,12 @@ namespace SpyVK.Services
                 int taskGettingCount = 0;
                 while (taskGettingCount <= requestCount)
                 {
-                    Task task = queue.GetTask();
+                    TimeTask task = queue.GetTask();
                     if (task != null)
                     {
                         _logger.LogInformation("Background service - start task - Queue of task runner.");
                         taskGettingCount++;
-                        task.Start();
+                        task.StartTask();
                     }
                     else
                     {

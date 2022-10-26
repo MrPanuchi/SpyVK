@@ -1,27 +1,28 @@
 ﻿using SpyVK.Services.Interfaces;
+using SpyVK.Services.newVK;
 
 namespace SpyVK.Services
 {
     public class QueueOfTaskService : IQueueOfTask
     {
-        private readonly PriorityQueue<Task,int> _priorityQueue;
+        private readonly PriorityQueue<TimeTask,int> _priorityQueue;
         public QueueOfTaskService()
         {
-            _priorityQueue = new PriorityQueue<Task, int>();
+            _priorityQueue = new PriorityQueue<TimeTask, int>();
         }
-        public void AddPrimaryTask(Task task)
+        public void AddPrimaryTask(TimeTask task)
         {
             _priorityQueue.Enqueue(task, 0);
         }
 
-        public void AddSecondaryTask(Task task)
+        public void AddSecondaryTask(TimeTask task)
         {
             _priorityQueue.Enqueue(task, 1);
         }
 
-        public Task GetTask()
+        public TimeTask GetTask()
         {
-            Task task;
+            TimeTask task;
             bool result = _priorityQueue.TryDequeue(out task, out _);
             if (result)
             {

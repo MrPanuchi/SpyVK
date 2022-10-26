@@ -59,14 +59,25 @@ namespace SpyVK.Controllers
             {
                 return Redirect(returnUrl);
             }
-            //WebRequest request = WebRequest.Create($"https://api.vk.com/method/account.getInfo?access_token={info.AuthenticationTokens.First().Value}&v=5.131");
-            //WebResponse response = await request.GetResponseAsync();
-            //var a = new StreamReader(response.GetResponseStream()).ReadToEnd();
+            
+            Task<User> task = new Task<User>(() => _VKApiService.GetSelfAccount(info.AuthenticationTokens.First().Value));
+            _queueOfTask.AddPrimaryTask(task);
 
-            Task<User> result = new Task<User>(() => _VKApiService.GetSelfAccount(info.AuthenticationTokens.First().Value));
-            _queueOfTask.AddPrimaryTask(result);
+            task.Wait();
 
-            result.Wait();
+            User userResult = task.Result;
+
+            var result = await _userManager.FindByIdAsync(userResult.Id.ToString());
+
+            if (result == null)
+            {
+                // TO DO Registration
+            }
+            else
+            {
+
+            }
+
             ApplicationUserIdentity user = new ApplicationUserIdentity();
             return Ok();
         }
