@@ -43,7 +43,7 @@ namespace SpyVK.Services.newVK
         }
         private string ConstructRequestString()
         {
-            return vkWay + methodGroup + "?" + AddUniqPatameters() + "&access_token=" + token + "&v=" + version;
+            return vkWay + methodGroup + "." + method + "?" + AddUniqPatameters() + "&access_token=" + token + "&v=" + version;
         }
         protected abstract string AddUniqPatameters();
     }
